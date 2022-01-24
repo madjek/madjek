@@ -1,2 +1,4 @@
-# JS_Portfolio
-JS projects for portfolio
+<a href="#">
+  <img align="center" src="https://github-readme-stats.vercel.app/api?username=madjek&hide=contribs&show_icons=true&theme=tokyonight" />
+  <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=madjek&layout=compact&theme=tokyonight" />
+</a>
