@@ -18,6 +18,14 @@ const Login = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
+  useEffect(() => {
+    if (userInfo) {
+      history('/profile');
+    } else if (!userInfo) {
+      history('/login');
+    }
+  }, [history, userInfo]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     if (
@@ -28,9 +36,14 @@ const Login = () => {
       setMessage('Wrong email');
     } else {
       dispatch(login(email, password));
-      setMessage(null);
     }
   };
+
+  if (message) {
+    setTimeout(() => {
+      setMessage(null);
+    }, 2000);
+  }
 
   return (
     <FormContainer>

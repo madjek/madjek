@@ -33,10 +33,14 @@ const Register = () => {
       setMessage('Wrong email');
     } else {
       dispatch(register(name, email, password));
-      setMessage(null);
     }
   };
 
+  if (message) {
+    setTimeout(() => {
+      setMessage(null);
+    }, 2000);
+  }
   if (success) {
     setTimeout(() => {
       history('/login');
@@ -50,6 +54,7 @@ const Register = () => {
         <Form.Group className='my-3' controlId='name'>
           <Form.Control
             required
+            minlength='2'
             type='name'
             placeholder='Enter name'
             value={name}
