@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import loader from '../assets/img/loader.svg';
 import { useNavigate } from 'react-router-dom';
 import { Col, FormControl, Image, InputGroup, Row } from 'react-bootstrap';
 import '../css/MovieRent.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { movieList, showMovie } from '../../../redux/action/movierentAction';
 
 const MovieRent = () => {
-  let history = useNavigate();
-
-  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState('');
+  // const [movie, setMovie] = useState([]);
+
+  const list = useSelector((state) => state.movieList);
+  const { movies } = list;
+
+  const history = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(() => {
-      showMovies();
-    }, 100);
-  }, []);
-
-  const showMovies = async () => {
-    let res = await axios.get('https://dvd-rent.herokuapp.com/movies');
-    setMovies(res.data);
-  };
+    dispatch(movieList());
+  }, [dispatch]);
 
   const chosenMovie = (chosenMovie) => {
+    dispatch(showMovie(chosenMovie));
     localStorage.setItem('chosenMovie', JSON.stringify(chosenMovie));
-
     history('/projects/movierent/movie');
   };
 
-  if (movies[1]?.title) {
+  if (movies) {
     return (
       <Row className='d-flex justify-content-center text-center back'>
         <Row className='searchBar'>

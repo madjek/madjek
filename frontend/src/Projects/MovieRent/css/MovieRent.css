@@ -80,13 +80,43 @@
   align-items: baseline;
 }
 
+@media (min-width: 300px) {
+  .movInfTxt {
+    font-size: 0.65em;
+  }
+}
 @media (min-width: 768px) {
   .movInfTxt {
-    font-size: 1em;
+    font-size: 0.8em;
   }
 }
 @media (min-width: 992px) {
   .movInfTxt {
-    font-size: 1.1em;
+    font-size: 1em;
   }
+}
+
+/* .movies {
+  width: 77vw;
+  max-width: 77vw;
+  height: 75vh;
+  flex-wrap: wrap;
+  overflow: auto;
+} */
+
+.movieCard {
+  position: relative;
+  justify-content: center;
+  border-radius: 1em;
+  margin: 1em;
+}
+
+.delBtn {
+  position: absolute;
+  width: 12em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  bottom: 0.5em;
+  left: 50%;
+  transform: translate(-50%);
 }
