@@ -9,9 +9,12 @@ import {
   userUpdateProfileReducer,
 } from './reducers/userReducer';
 import {
+  movieCreditsReducer,
   movieDetailsReducer,
   movieListMyReducer,
   movieListReducer,
+  movieOrderCreateReducer,
+  movieReturnReducer,
 } from './reducers/movierentReducer';
 
 const reducer = combineReducers({
@@ -20,9 +23,12 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
 
+  movieCredits: movieCreditsReducer,
   movieList: movieListReducer,
   movieListMy: movieListMyReducer,
+  movieOrderCreate: movieOrderCreateReducer,
   movieDetails: movieDetailsReducer,
+  returnMovie: movieReturnReducer,
 });
 
 const movieFromStorage = localStorage.getItem('chosenMovie')

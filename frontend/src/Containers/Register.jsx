@@ -26,7 +26,7 @@ const Register = () => {
     if (password !== confirmPassword) {
       setMessage('Passwords are not the same');
     } else if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         email
       )
     ) {
@@ -42,6 +42,7 @@ const Register = () => {
     }, 2000);
   }
   if (success) {
+    userRegister.success = false;
     setTimeout(() => {
       history('/login');
     }, 2000);

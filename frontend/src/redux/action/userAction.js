@@ -14,6 +14,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
 } from '../types';
+import { MovieCredits } from './movierentAction';
 
 export const register = (name, email, password) => async (dispatch) => {
   try {
@@ -36,6 +37,8 @@ export const register = (name, email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
+    dispatch(MovieCredits());
+
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
@@ -66,6 +69,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
     localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch(MovieCredits());
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -101,6 +105,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       type: USER_DETAILS_SUCCESS,
       payload: data,
     });
+    dispatch(MovieCredits());
   } catch (error) {
     const message =
       error.response && error.response.data.message

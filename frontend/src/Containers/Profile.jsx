@@ -6,8 +6,9 @@ import Loader from '../Components/Loader';
 import { getUserDetails, updateUserProfile } from '../redux/action/userAction';
 import { useNavigate } from 'react-router-dom';
 import { USER_UPDATE_PROFILE_RESET } from '../redux/types';
-import { listMyMovies } from '../redux/action/movierentAction';
+import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
+import MovieCoin from '../Projects/MovieRent/Components/MovieCoin';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -31,21 +32,24 @@ const Profile = () => {
   const movieListMy = useSelector((state) => state.movieListMy);
   const { loading: loadingList, error: errorList, movies } = movieListMy;
 
+  const movieCredits = useSelector((state) => state.movieCredits);
+  const { credits } = movieCredits;
+
+  const retMovie = useSelector((state) => state.returnMovie);
+  const { success: returnSuccess } = retMovie;
+
   useEffect(() => {
     if (!userInfo) {
       history('/login');
+    } else if (!user || !user.name || success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+      dispatch(getUserDetails('profile'));
     } else {
-      if (!user || !user.name || success) {
-        dispatch({ type: USER_UPDATE_PROFILE_RESET });
-        dispatch(getUserDetails('profile'));
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
+      setName(userInfo.name);
+      setEmail(userInfo.email);
     }
     dispatch(listMyMovies());
-    // console.log(listMyMovies());
-  }, [dispatch, history, userInfo, user, success]);
+  }, [dispatch, history, userInfo, user, success, returnSuccess]);
 
   if (message) {
     setTimeout(() => {
@@ -74,9 +78,14 @@ const Profile = () => {
     }
   };
 
-  console.log(movies);
+  const returnHandler = (id) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(returnMovie(id));
+    }
+  };
+
   return (
-    <Row className='text-center mt-5'>
+    <Row className='text-center mt-5 mx-0'>
       <Col md={3}>
         <h2>User profile</h2>
         {message && <Message>{message}</Message>}
@@ -131,10 +140,16 @@ const Profile = () => {
             </Button>
           </Form>
         )}
+        <Row className='my-3'>
+          <h5>
+            My movie credits:
+            <MovieCoin> {credits}</MovieCoin>
+          </h5>
+        </Row>
       </Col>
 
       <Col md={9} className='px-3'>
-        <Row className='mt-5 mt-sm-0'>
+        <Row className='mt-3 mt-sm-0'>
           <h2>My movies</h2>
         </Row>
         {loadingList ? (
@@ -144,24 +159,27 @@ const Profile = () => {
         ) : (
           <Row>
             {movies.map((movie) => (
-              <Col md={4} className='px-0' key={movie._id}>
-                <Row className='movieCard my-0'>
+              <Col md={4} key={movie._id}>
+                <Row className='movieCard m-0'>
                   <Image
                     alt={movie.movie_id}
                     className='poster m-0 p-0'
                     src={`${movie.poster_path}`}
+                    onClick={() => {
+                      window.location = `https://www.youtube.com/results?search_query=${movie.title}+Full+Movie`;
+                    }}
                   />
                   <Button
-                    className='delBtn'
-                    // onClick={() => DeleteOrder(movie._id)}
+                    className='delBtn px-0'
+                    onClick={() => returnHandler(movie._id)}
                   >
-                    Return the movie
+                    Return the movie:<MovieCoin> +1</MovieCoin>
                   </Button>
                 </Row>
-                <Row className='justify-content-center mt-1 fw-bold'>
+                <Row className='justify-content-center mt-1 fw-bold gx-0'>
                   {movie.title}
                 </Row>
-                <Row className='justify-content-center mb-3'>
+                <Row className='justify-content-center mb-3 gx-0'>
                   Odrer date: {moment(movie.createdAt).format('MMMM DD YYYY')}
                 </Row>
               </Col>

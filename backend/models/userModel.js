@@ -16,6 +16,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    movieCredits: {
+      type: Number,
+      required: true,
+      default: 10,
+    },
     isAdmin: {
       type: Boolean,
       required: true,

@@ -5,7 +5,7 @@ import Technology from '../Components/Technology';
 
 const Home = () => {
   return (
-    <Row className='mainpage d-flex justify-content-center text-center mt-5'>
+    <Row className='mainpage d-flex justify-content-center text-center mt-5 gx-0'>
       <Row className='mb-5'>
         <Col>
           <Row className='my-lg-3 text-lg-start'>

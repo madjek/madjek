@@ -1,4 +1,5 @@
 import {
+  MOVIE_CREDITS,
   MOVIE_DETAILS_FAIL,
   MOVIE_DETAILS_REQUEST,
   MOVIE_DETAILS_SUCCESS,
@@ -10,6 +11,13 @@ import {
   MOVIE_LIST_REQUEST,
   MOVIE_LIST_RESET,
   MOVIE_LIST_SUCCESS,
+  MOVIE_ORDER_CREATE_FAIL,
+  MOVIE_ORDER_CREATE_REQUEST,
+  MOVIE_ORDER_CREATE_RESET,
+  MOVIE_ORDER_CREATE_SUCCESS,
+  MOVIE_RETURN_FAIL,
+  MOVIE_RETURN_REQUEST,
+  MOVIE_RETURN_SUCCESS,
   MOVIE_SHOW,
 } from '../types';
 
@@ -64,6 +72,51 @@ export const movieListMyReducer = (state = { movies: [] }, action) => {
 
     case MOVIE_LIST_MY_RESET:
       return { movies: [] };
+
+    default:
+      return state;
+  }
+};
+
+export const movieOrderCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MOVIE_ORDER_CREATE_REQUEST:
+      return { loading: true };
+
+    case MOVIE_ORDER_CREATE_SUCCESS:
+      return { loading: false, success: true, order: action.payload };
+
+    case MOVIE_ORDER_CREATE_FAIL:
+      return { loading: false, error: action.payload };
+
+    case MOVIE_ORDER_CREATE_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export const movieReturnReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MOVIE_RETURN_REQUEST:
+      return { loading: true };
+
+    case MOVIE_RETURN_SUCCESS:
+      return { loading: false, success: true };
+
+    case MOVIE_RETURN_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const movieCreditsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case MOVIE_CREDITS:
+      return { credits: action.payload };
 
     default:
       return state;

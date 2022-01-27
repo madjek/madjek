@@ -5,13 +5,16 @@ import { Button, Image, Row, Table } from 'react-bootstrap';
 import Message from '../../../Components/Message';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMovieOrder } from '../../../redux/action/movierentAction';
+import MovieCoin from '../Components/MovieCoin';
 
-const Movie = (props) => {
+const Movie = () => {
   const history = useNavigate();
   const dispatch = useDispatch();
 
   const movieDetails = useSelector((state) => state.movieDetails);
   const { movie } = movieDetails;
+  const movieOrderCreate = useSelector((state) => state.movieOrderCreate);
+  const { error, success } = movieOrderCreate;
   const user = useSelector((state) => state.userLogin);
   const { userInfo } = user;
 
@@ -24,19 +27,33 @@ const Movie = (props) => {
 
   const placeOrderHandler = () => {
     if (!userInfo) {
-      setMessage('You should register or login to rent a movie');
-    } else if (userInfo) {
+      setMessage('You should login to rent a movie');
+    } else if (userInfo.movieCredits === 0) {
+      setMessage(
+        `You you should top up your credits. You have ${userInfo.movieCredits}`
+      );
+    } else if (userInfo.movieCredits >= 2) {
       let data = {
         user: userInfo._id,
         movie: movieDetails.movie,
+        credits: -2,
       };
       dispatch(createMovieOrder(data));
-      setMessage('Movie added successfully');
-      setTimeout(() => {
-        history('/profile');
-      }, 2500);
     }
   };
+
+  if (success) {
+    movieOrderCreate.success = false;
+    setTimeout(() => {
+      history('/profile');
+    }, 1500);
+  }
+
+  if (error) {
+    setTimeout(() => {
+      movieOrderCreate.error = null;
+    }, 1);
+  }
 
   return (
     <Row className='more d-flex justify-content-center text-center back'>
@@ -74,9 +91,14 @@ const Movie = (props) => {
         <Row lg={3} xs={1} className='justify-content-center my-2'>
           <Button variant='dark' size='lg' onClick={placeOrderHandler}>
             Rent the movie
+            {userInfo && <MovieCoin>: -2</MovieCoin>}
           </Button>
         </Row>
         {message && <Message>{message}</Message>}
+        {success && (
+          <Message variant='success'>Movie added successfully</Message>
+        )}
+        {error && <Message variant='danger'>{error}</Message>}
       </Row>
     </Row>
   );

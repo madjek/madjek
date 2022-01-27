@@ -33,6 +33,7 @@ const login = (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        movieCredits: user.movieCredits,
         isAdmin: user.isAdmin,
         token: newToken(user._id, user.isAdmin),
       });
@@ -49,6 +50,7 @@ const profile = (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        movieCredits: user.movieCredits,
         isAdmin: user.isAdmin,
       });
     } else {
