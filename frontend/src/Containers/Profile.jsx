@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../Components/Message';
 import Loader from '../Components/Loader';
 import { getUserDetails, updateUserProfile } from '../redux/action/userAction';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { USER_UPDATE_PROFILE_RESET } from '../redux/types';
 import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
@@ -145,6 +145,12 @@ const Profile = () => {
             My movie credits:
             <MovieCoin> {credits}</MovieCoin>
           </h5>
+          <Row>
+            <Col className='fw-light'>
+              Do you need{' '}
+              <Link to={'/projects/movierent/buycredits'}>credits</Link>?
+            </Col>
+          </Row>
         </Row>
       </Col>
 

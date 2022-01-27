@@ -1,4 +1,6 @@
 import {
+  BUY_MOVIE_CREDITS_FAIL,
+  BUY_MOVIE_CREDITS_SUCCESS,
   MOVIE_CREDITS,
   MOVIE_DETAILS_FAIL,
   MOVIE_DETAILS_REQUEST,
@@ -117,6 +119,12 @@ export const movieCreditsReducer = (state = {}, action) => {
   switch (action.type) {
     case MOVIE_CREDITS:
       return { credits: action.payload };
+
+    case BUY_MOVIE_CREDITS_SUCCESS:
+      return { success: true };
+
+    case BUY_MOVIE_CREDITS_FAIL:
+      return { error: action.payload };
 
     default:
       return state;

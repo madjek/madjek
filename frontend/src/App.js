@@ -12,6 +12,7 @@ import Profile from './Containers/Profile';
 
 import MovieRent from './Projects/MovieRent/Containers/MovieRent';
 import Movie from './Projects/MovieRent/Containers/Movie';
+import BuyCredits from './Projects/MovieRent/Containers/BuyCredits';
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
 
             <Route path='/projects/movierent' element={<MovieRent />} />
             <Route path='/projects/movierent/movie' element={<Movie />} />
+            <Route
+              path='/projects/movierent/buycredits'
+              element={<BuyCredits />}
+            />
           </Routes>
         </Container>
       </main>

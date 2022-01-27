@@ -1,5 +1,7 @@
 import axios from 'axios';
 import {
+  BUY_MOVIE_CREDITS_FAIL,
+  BUY_MOVIE_CREDITS_SUCCESS,
   MOVIE_CREDITS,
   MOVIE_DETAILS_FAIL,
   MOVIE_DETAILS_REQUEST,
@@ -222,5 +224,38 @@ export const MovieCredits = () => async (dispatch, getState) => {
     if (message === 'Not authorized, token failed') {
       dispatch(logout());
     }
+  }
+};
+
+export const buyCredits = (amount) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: { Authorization: `Bearer ${userInfo.token}` },
+    };
+
+    await axios.patch(`/api/movierent/credits/${amount}`, userInfo._id, config);
+
+    dispatch({
+      type: BUY_MOVIE_CREDITS_SUCCESS,
+    });
+    setTimeout(() => {
+      dispatch(MovieCredits());
+    }, 2000);
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: BUY_MOVIE_CREDITS_FAIL,
+      payload: message,
+    });
   }
 };
