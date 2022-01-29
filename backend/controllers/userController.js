@@ -84,4 +84,63 @@ const update = (req, res) => {
   });
 };
 
-export { register, login, profile, update };
+const getUsers = (req, res) => {
+  User.find({}).then((users) => {
+    res.json(users);
+  });
+};
+
+const getUserById = (req, res) => {
+  User.findById(req.params.id)
+    .select('-password')
+    .then((user) => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    });
+};
+
+const updateUser = (req, res) => {
+  User.findById(req.params.id).then((user) => {
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isAdmin = req.body.isAdmin;
+
+      const updatedUser = user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  });
+};
+
+const deleteUser = (req, res) => {
+  User.findById(req.params.id).then((user) => {
+    if (user) {
+      user.remove();
+      res.json({ message: 'User removed' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  });
+};
+
+export {
+  register,
+  login,
+  profile,
+  update,
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+};
