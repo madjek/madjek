@@ -13,7 +13,7 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
-} from '../types';
+} from '../constants/main';
 import { MovieCredits } from './movierentAction';
 
 export const register = (name, email, password) => async (dispatch) => {

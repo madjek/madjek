@@ -5,7 +5,7 @@ import Message from '../Components/Message';
 import Loader from '../Components/Loader';
 import { getUserDetails, updateUserProfile } from '../redux/action/userAction';
 import { Link, useNavigate } from 'react-router-dom';
-import { USER_UPDATE_PROFILE_RESET } from '../redux/types';
+import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/main';
 import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
 import MovieCoin from '../Projects/MovieRent/Components/MovieCoin';

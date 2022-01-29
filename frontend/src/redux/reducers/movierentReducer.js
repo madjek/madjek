@@ -21,7 +21,7 @@ import {
   MOVIE_RETURN_REQUEST,
   MOVIE_RETURN_SUCCESS,
   MOVIE_SHOW,
-} from '../types';
+} from '../constants/movierent';
 
 export const movieListReducer = (state = { movies: [] }, action) => {
   switch (action.type) {
