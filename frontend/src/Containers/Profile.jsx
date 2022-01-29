@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Image } from 'react-bootstrap';
+import { Form, Button, Row, Col, Image, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../Components/Message';
 import Loader from '../Components/Loader';
 import { getUserDetails, updateUserProfile } from '../redux/action/userAction';
 import { Link, useNavigate } from 'react-router-dom';
-import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/main';
+import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/user';
 import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
 import MovieCoin from '../Projects/MovieRent/Components/MovieCoin';
+import { listMyOrders } from '../redux/action/ecommerceActions';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -38,6 +39,9 @@ const Profile = () => {
   const retMovie = useSelector((state) => state.returnMovie);
   const { success: returnSuccess } = retMovie;
 
+  const orderListMy = useSelector((state) => state.orderListMy);
+  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+
   useEffect(() => {
     if (!userInfo) {
       history('/login');
@@ -49,6 +53,7 @@ const Profile = () => {
       setEmail(userInfo.email);
     }
     dispatch(listMyMovies());
+    dispatch(listMyOrders());
   }, [dispatch, history, userInfo, user, success, returnSuccess]);
 
   if (message) {
@@ -191,6 +196,57 @@ const Profile = () => {
               </Col>
             ))}
           </Row>
+        )}
+        <Row className='mt-3 mt-sm-0'>
+          <h2>My Orders</h2>
+        </Row>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant='danger'>{errorOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{moment(order.createdAt).format('MM-DD-YYYY')}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      moment(order.paidAt).format('MM-DD-YYYY')
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      moment(order.deliveredAt).format('MM-DD-YYYY')
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <Link to={`/projects/ecommerce/order/${order._id}`}>
+                      <Button className='btn-sm' variant='light'>
+                        Details
+                      </Button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         )}
       </Col>
     </Row>
