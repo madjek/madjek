@@ -25,12 +25,17 @@ const Header = () => {
                 <NavDropdown.Item href='/projects/movierent'>
                   Movie Rent
                 </NavDropdown.Item>
-                <NavDropdown.Item href='/2'>2</NavDropdown.Item>
+                <NavDropdown.Item href='/projects/ecommerce'>
+                  E-Commerce
+                </NavDropdown.Item>
                 <NavDropdown.Item href='/3'>3</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href='/contact'>Contact</Nav.Link>
             </Nav>
             <Nav>
+              <Nav.Link href='/projects/ecommerce/cart'>
+                <i className='fas fa-shopping-cart'></i> Cart
+              </Nav.Link>
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id='username'>
                   <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>
@@ -42,6 +47,22 @@ const Header = () => {
                 <Nav.Link href='/login'>
                   <i className='fas fa-user'></i>Log in
                 </Nav.Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='adminmenu'>
+                  <NavDropdown.Item href='/admin/userlist'>
+                    Users
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/admin/movieList'>
+                    Movies
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/admin/productlist'>
+                    Products
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href='/admin/orderlist'>
+                    Orders
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>

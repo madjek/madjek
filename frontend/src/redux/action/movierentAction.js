@@ -28,7 +28,7 @@ export const movieList = () => async (dispatch) => {
       type: MOVIE_LIST_REQUEST,
     });
 
-    const { data } = await axios.get(`/api/movierent`);
+    const { data } = await axios.get(`/api/movierent/movies`);
 
     dispatch({
       type: MOVIE_LIST_SUCCESS,
@@ -68,7 +68,7 @@ export const getMovieDetails =
         },
       };
 
-      const { data } = await axios.get(`/api/movierent/orders/${id}`, config);
+      const { data } = await axios.get(`/api/movierent/movies/${id}`, config);
 
       dispatch({
         type: MOVIE_DETAILS_SUCCESS,

@@ -20,24 +20,25 @@ const getMovieById = (req, res) => {
 
 const newOrder = (req, res) => {
   const { user, movie } = req.body;
+  MROrder.findOne({ movieId: movie._id })
+    .where({ user: user })
+    .then((data) => {
+      if (data) {
+        res.status(400).json({ message: 'You already have this movie' });
+      } else if (!movie) {
+        res.status(400).json({ message: 'No any movie' });
+      } else {
+        const order = new MROrder({
+          user,
+          movieId: movie._id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+        });
 
-  MROrder.findOne({ movieId: movie._id }).then((data) => {
-    if (data) {
-      res.status(400).json({ message: 'You already have this movie' });
-    } else if (!movie) {
-      res.status(400).json({ message: 'No any movie' });
-    } else {
-      const order = new MROrder({
-        user,
-        movieId: movie._id,
-        title: movie.title,
-        poster_path: movie.poster_path,
-      });
-
-      const createdOrder = order.save();
-      res.status(201).json(createdOrder);
-    }
-  });
+        const createdOrder = order.save();
+        res.status(201).json(createdOrder);
+      }
+    });
 };
 
 const getMyMovies = (req, res) => {

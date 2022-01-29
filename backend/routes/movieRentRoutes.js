@@ -10,8 +10,8 @@ import {
 } from '../controllers/movieRentController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
-router.get('/', getMovies);
-router.get('/:id', getMovieById);
+router.get('/movies', getMovies);
+router.get('/movies/:id', getMovieById);
 
 router.post('/orders', protect, newOrder);
 router.get('/myorders/:id', protect, getMyMovies);
