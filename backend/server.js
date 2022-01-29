@@ -5,6 +5,7 @@ import db from './config/db.js';
 
 import userRoutes from './routes/userRoutes.js';
 import movieRentRoutes from './routes/movieRentRoutes.js';
+import ecommerceRoutes from './routes/ecommerceRoutes.js';
 
 dotenv.config();
 db();
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/movierent', movieRentRoutes);
+app.use('/api/ecommerce', ecommerceRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
