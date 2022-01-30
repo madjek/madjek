@@ -110,7 +110,7 @@ const ProductList = () => {
                   <td>{product.name}</td>
                   <td>${product.price}</td>
                   <td>{product.category}</td>
-                  <td>
+                  <td className='text-center'>
                     <Link to={`/admin/product/${product._id}`}>
                       <Button variant='info' className='btn-sm'>
                         <i className='fas fa-edit'></i>

@@ -21,9 +21,9 @@ const ECommerce = () => {
   }, [dispatch, pageNumber]);
 
   return (
-    <div>
+    <>
       <ProductCarousel />
-      <h1>Latest Products</h1>
+      <h1 className='mt-4'>Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -40,7 +40,7 @@ const ECommerce = () => {
           <Paginate pages={pages} page={page} />
         </>
       )}
-    </div>
+    </>
   );
 };
 

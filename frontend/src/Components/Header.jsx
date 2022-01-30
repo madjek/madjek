@@ -8,6 +8,8 @@ const Header = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -33,9 +35,11 @@ const Header = () => {
               <Nav.Link href='/contact'>Contact</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href='/projects/ecommerce/cart'>
-                <i className='fas fa-shopping-cart'></i> Cart
-              </Nav.Link>
+              {cartItems[0] && (
+                <Nav.Link href='/projects/ecommerce/cart'>
+                  <i className='fas fa-shopping-cart'></i> Cart
+                </Nav.Link>
+              )}
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id='username'>
                   <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>

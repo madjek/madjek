@@ -72,7 +72,7 @@ const BuyCredits = () => {
               <Row className='fs-4'>
                 <Col xs={4}>Price:</Col>
                 <Col>
-                  <MovieCoin> 1</MovieCoin> = 2 &euro;
+                  <MovieCoin> 1</MovieCoin> = $2
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -92,7 +92,7 @@ const BuyCredits = () => {
             <ListGroup.Item>
               <Row className='fs-4'>
                 <Col xs={4}>Total:</Col>
-                <Col>{total} &euro;</Col>
+                <Col>${total}</Col>
               </Row>
             </ListGroup.Item>
             <ListGroup.Item>

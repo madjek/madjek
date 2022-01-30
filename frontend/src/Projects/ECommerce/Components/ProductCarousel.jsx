@@ -32,7 +32,11 @@ const ProductCarousel = () => {
               fluid
             />
             <Carousel.Caption className='carousel-caption'>
-              <h2>
+              <h2
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                }}
+              >
                 {product.name} (${product.price})
               </h2>
             </Carousel.Caption>

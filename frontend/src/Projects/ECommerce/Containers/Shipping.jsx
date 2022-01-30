@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../Components/FormContainer';
+import FormContainer from '../../../Components/FormContainer';
 import CheckoutSteps from '../Components/CheckoutSteps';
 import { saveShippingAddress } from '../../../redux/action/ecommerceActions';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const Shipping = () => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
-      <h1>Shipping</h1>
+      <h1 className='text-center'>Shipping</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
           <Form.Label>Address</Form.Label>
@@ -74,7 +74,7 @@ const Shipping = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button type='submit' variant='primary' className='mt-3'>
           Continue
         </Button>
       </Form>

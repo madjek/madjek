@@ -36,11 +36,10 @@ const OrderDetails = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
   if (!loading) {
-    const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2);
-    };
-
     order.itemsPrice = addDecimals(
       order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
@@ -74,6 +73,7 @@ const OrderDetails = () => {
         setSdkReady(true);
       }
     }
+    // eslint-disable-next-line
   }, [dispatch, history, userInfo, successPay, successDeliver, order]);
 
   const successPaymentHandler = (paymentResult) => {
@@ -151,7 +151,8 @@ const OrderDetails = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = $
+                          {addDecimals(item.qty * item.price)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -162,7 +163,7 @@ const OrderDetails = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='mb-3'>
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h2>Order Summary</h2>
@@ -209,15 +210,13 @@ const OrderDetails = () => {
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (
-                  <ListGroup.Item>
-                    <Button
-                      type='button'
-                      className='btn btn-block'
-                      onClick={deliverHandler}
-                    >
-                      Mark As Delivered
-                    </Button>
-                  </ListGroup.Item>
+                  <Button
+                    type='button'
+                    className='btn btn-block'
+                    onClick={deliverHandler}
+                  >
+                    Mark As Delivered
+                  </Button>
                 )}
             </ListGroup>
           </Card>

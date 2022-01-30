@@ -1,3 +1,9 @@
+@media (min-width: 768px) {
+  .productCard {
+    height: 33em;
+  }
+}
+
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {
@@ -14,10 +20,6 @@
 }
 .carousel a {
   margin: 0 auto;
-}
-
-.productCard {
-  height: 33em;
 }
 .productCard img {
   height: 20em;

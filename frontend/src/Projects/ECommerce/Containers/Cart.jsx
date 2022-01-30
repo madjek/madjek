@@ -53,7 +53,7 @@ const Cart = () => {
       <Col md={8}>
         {cartItems.length === 0 ? (
           <Message>
-            Your cart is empty <Link to='/'>Go Back</Link>
+            Your cart is empty <Link to='/projects/ecommerce'>Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
@@ -63,11 +63,13 @@ const Cart = () => {
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
-                  <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                  <Col md={4}>
+                    <Link to={`/projects/ecommerce/product/${item.product}`}>
+                      {item.name}
+                    </Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
-                  <Col md={2}>
+                  <Col md={2} xs={9}>
                     <Form.Control
                       as='select'
                       value={item.qty}
@@ -84,7 +86,7 @@ const Cart = () => {
                       ))}
                     </Form.Control>
                   </Col>
-                  <Col md={2}>
+                  <Col xs={1} className='me-1'>
                     <Button
                       type='button'
                       variant='light'
@@ -100,7 +102,7 @@ const Cart = () => {
         )}
       </Col>
       <Col md={4}>
-        <Card>
+        <Card className='mb-3'>
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
@@ -112,16 +114,14 @@ const Cart = () => {
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
-            <ListGroup.Item>
-              <Button
-                type='button'
-                className='btn-block'
-                disabled={cartItems.length === 0}
-                onClick={checkoutHandler}
-              >
-                Proceed To Checkout
-              </Button>
-            </ListGroup.Item>
+            <Button
+              type='button'
+              className='btn-block'
+              disabled={cartItems.length === 0}
+              onClick={checkoutHandler}
+            >
+              Proceed To Checkout
+            </Button>
           </ListGroup>
         </Card>
       </Col>

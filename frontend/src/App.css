@@ -90,3 +90,8 @@
     background-position: 100% 0;
   }
 }
+
+.accordion-button:not(.collapsed) {
+  background-color: #0f2537;
+  color: white;
+}

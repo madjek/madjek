@@ -56,7 +56,7 @@ const Movie = () => {
   }
 
   return (
-    <Row className='more d-flex justify-content-center text-center back'>
+    <Row className='more d-flex justify-content-center text-center back mb-3'>
       <Row className='justify-content-center p-0 movie'>
         <Image
           alt={movie.id}
@@ -67,7 +67,11 @@ const Movie = () => {
           <h1>{movie.title}</h1>
         </Row>
         <Row className='text-start movieInfo'>
-          <Table className='text-start mt-auto movInfTxt' borderless bsPrefix>
+          <Table
+            className=' mt-auto movInfTxt table-desktop'
+            borderless
+            bsPrefix
+          >
             <tbody>
               <tr>
                 <td className='fw-bold text-nowrap pe-2'>Vote average:</td>
@@ -87,9 +91,30 @@ const Movie = () => {
               </tr>
             </tbody>
           </Table>
+          <Row className='mt-auto movInfTxt table-mobile' borderless bsPrefix>
+            <Row className='d-block'>
+              <b className='p-0'>Vote average: </b>
+              {movie.vote_average}
+            </Row>
+            <Row className='d-block'>
+              <b className='p-0'>Release date: </b>{' '}
+              {moment(movie.release_date).format('MMMM DD YYYY')}
+            </Row>
+            <Row className='d-block'>
+              <b className='p-0'>Genres: </b> {movie.genres.join(', ')}
+            </Row>
+            <Row className='d-block'>
+              <b className='p-0'>Overview: </b> {movie.overview}
+            </Row>
+          </Row>
         </Row>
-        <Row lg={3} xs={1} className='justify-content-center my-2'>
-          <Button variant='dark' size='lg' onClick={placeOrderHandler}>
+        <Row lg={3} xs={1} className='justify-content-center my-3'>
+          <Button
+            variant='dark'
+            size='lg'
+            className='px-1'
+            onClick={placeOrderHandler}
+          >
             Rent the movie
             {userInfo && <MovieCoin>: -2</MovieCoin>}
           </Button>

@@ -73,7 +73,6 @@ const Order = () => {
                 {cart.shippingAddress.country}
               </p>
             </ListGroup.Item>
-
             <ListGroup.Item>
               <h2>Order Items</h2>
               {cart.cartItems.length === 0 ? (
@@ -99,7 +98,8 @@ const Order = () => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = $
+                          {addDecimals(item.qty * item.price)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -110,7 +110,7 @@ const Order = () => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='mb-3'>
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h2>Order Summary</h2>
@@ -142,16 +142,14 @@ const Order = () => {
               <ListGroup.Item>
                 {error && <Message variant='danger'>{error}</Message>}
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Button
-                  type='button'
-                  className='btn-block'
-                  disabled={cart.cartItems === 0}
-                  onClick={placeOrderHandler}
-                >
-                  Place Order
-                </Button>
-              </ListGroup.Item>
+              <Button
+                type='button'
+                className='btn-block'
+                disabled={cart.cartItems === 0}
+                onClick={placeOrderHandler}
+              >
+                Place Order
+              </Button>
             </ListGroup>
           </Card>
         </Col>

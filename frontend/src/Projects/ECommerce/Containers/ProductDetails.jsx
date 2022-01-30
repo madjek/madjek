@@ -52,6 +52,7 @@ const ProductDetails = () => {
       dispatch(listProductDetails(id));
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
+    // eslint-disable-next-line
   }, [dispatch, successProductReview]);
 
   const addToCartHandler = () => {
@@ -62,9 +63,6 @@ const ProductDetails = () => {
     const name = userInfo.name;
     e.preventDefault();
     dispatch(createProductReview(id, { name, rating, comment }));
-    // setTimeout(() => {
-    //   window.location.reload(true);
-    // }, 2000);
   };
 
   return (
@@ -79,7 +77,7 @@ const ProductDetails = () => {
       ) : (
         <>
           <Row>
-            <Col md={4}>
+            <Col lg={4} className='text-center mb-2'>
               <Image
                 className='productImg'
                 src={product.image}
@@ -87,7 +85,7 @@ const ProductDetails = () => {
                 fluid
               />
             </Col>
-            <Col md={5}>
+            <Col lg={5}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
@@ -104,7 +102,7 @@ const ProductDetails = () => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+            <Col lg={3} className='mb-3'>
               <Card>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
@@ -128,42 +126,39 @@ const ProductDetails = () => {
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
-                        <Col>Qty</Col>
+                        <Col>Amount:</Col>
                         <Col>
                           <Form.Control
                             as='select'
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}
                           >
-                            {[...Array(product.countInStock).keys()].map(
-                              (x) => (
-                                <option key={x + 1} value={x + 1}>
+                            {[...Array(product.countInStock).keys()]
+                              .slice(0, 10)
+                              .map((x) => (
+                                <option key={x + 1} max value={x + 1}>
                                   {x + 1}
                                 </option>
-                              )
-                            )}
+                              ))}
                           </Form.Control>
                         </Col>
                       </Row>
                     </ListGroup.Item>
                   )}
-
-                  <ListGroup.Item>
-                    <Button
-                      onClick={addToCartHandler}
-                      className='btn-block'
-                      type='button'
-                      disabled={product.countInStock === 0}
-                    >
-                      Add To Cart
-                    </Button>
-                  </ListGroup.Item>
+                  <Button
+                    onClick={addToCartHandler}
+                    className='btn-block'
+                    type='button'
+                    disabled={product.countInStock === 0}
+                  >
+                    Add To Cart
+                  </Button>
                 </ListGroup>
               </Card>
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col lg={6} className='mb-3'>
               <h2>Reviews</h2>
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
               <ListGroup variant='flush'>
@@ -204,7 +199,7 @@ const ProductDetails = () => {
                           <option value='5'>5 - Excellent</option>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group controlId='comment'>
+                      <Form.Group controlId='comment' className='mb-2'>
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
                           as='textarea'

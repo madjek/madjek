@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Image, Table } from 'react-bootstrap';
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Image,
+  Table,
+  Accordion,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../Components/Message';
 import Loader from '../Components/Loader';
@@ -160,94 +168,111 @@ const Profile = () => {
       </Col>
 
       <Col md={9} className='px-3'>
-        <Row className='mt-3 mt-sm-0'>
-          <h2>My movies</h2>
-        </Row>
-        {loadingList ? (
-          <Loader />
-        ) : errorList ? (
-          <Message variant='danger'>{errorList}</Message>
-        ) : (
-          <Row>
-            {movies.map((movie) => (
-              <Col md={4} key={movie._id}>
-                <Row className='movieCard m-0'>
-                  <Image
-                    alt={movie.movie_id}
-                    className='poster m-0 p-0'
-                    src={`${movie.poster_path}`}
-                    onClick={() => {
-                      window.location = `https://www.youtube.com/results?search_query=${movie.title}+Full+Movie`;
-                    }}
-                  />
-                  <Button
-                    className='delBtn px-0'
-                    onClick={() => returnHandler(movie._id)}
-                  >
-                    Return the movie:<MovieCoin> +1</MovieCoin>
-                  </Button>
+        <Accordion>
+          <Accordion.Item className='bg-dark' eventKey='0'>
+            <Accordion.Header>
+              <h2 className='ms-auto'>My Movies</h2>
+            </Accordion.Header>
+            <Accordion.Body>
+              {loadingList ? (
+                <Loader />
+              ) : errorList ? (
+                <Message variant='danger'>{errorList}</Message>
+              ) : (
+                <Row>
+                  {movies.map((movie) => (
+                    <Col md={4} key={movie._id}>
+                      <Row className='movieCard m-0'>
+                        <Image
+                          alt={movie.movie_id}
+                          className='poster m-0 p-0'
+                          src={`${movie.poster_path}`}
+                          onClick={() => {
+                            window.location = `https://www.youtube.com/results?search_query=${movie.title}+Full+Movie`;
+                          }}
+                        />
+                        <Button
+                          className='delBtn px-0'
+                          onClick={() => returnHandler(movie._id)}
+                        >
+                          Return the movie:<MovieCoin> +1</MovieCoin>
+                        </Button>
+                      </Row>
+                      <Row className='justify-content-center mt-1 fw-bold gx-0'>
+                        {movie.title}
+                      </Row>
+                      <Row className='justify-content-center mb-3 gx-0'>
+                        Odrer date:{' '}
+                        {moment(movie.createdAt).format('MMMM DD YYYY')}
+                      </Row>
+                    </Col>
+                  ))}
                 </Row>
-                <Row className='justify-content-center mt-1 fw-bold gx-0'>
-                  {movie.title}
-                </Row>
-                <Row className='justify-content-center mb-3 gx-0'>
-                  Odrer date: {moment(movie.createdAt).format('MMMM DD YYYY')}
-                </Row>
-              </Col>
-            ))}
-          </Row>
-        )}
-        <Row className='mt-3 mt-sm-0'>
-          <h2>My Orders</h2>
-        </Row>
-        {loadingOrders ? (
-          <Loader />
-        ) : errorOrders ? (
-          <Message variant='danger'>{errorOrders}</Message>
-        ) : (
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{moment(order.createdAt).format('MM-DD-YYYY')}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      moment(order.paidAt).format('MM-DD-YYYY')
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      moment(order.deliveredAt).format('MM-DD-YYYY')
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <Link to={`/projects/ecommerce/order/${order._id}`}>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
+              )}
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item className='bg-dark' eventKey='1'>
+            <Accordion.Header>
+              <h2 className='ms-auto'>My Orders</h2>
+            </Accordion.Header>
+            <Accordion.Body>
+              {loadingOrders ? (
+                <Loader />
+              ) : errorOrders ? (
+                <Message variant='danger'>{errorOrders}</Message>
+              ) : (
+                <Table striped bordered hover responsive className='table-sm'>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>DATE</th>
+                      <th>TOTAL</th>
+                      <th>PAID</th>
+                      <th>DELIVERED</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id}>
+                        <td>{order._id}</td>
+                        <td>{moment(order.createdAt).format('MM-DD-YYYY')}</td>
+                        <td>{order.totalPrice}</td>
+                        <td>
+                          {order.isPaid ? (
+                            moment(order.paidAt).format('MM-DD-YYYY')
+                          ) : (
+                            <i
+                              className='fas fa-times'
+                              style={{ color: 'red' }}
+                            ></i>
+                          )}
+                        </td>
+                        <td>
+                          {order.isDelivered ? (
+                            moment(order.deliveredAt).format('MM-DD-YYYY')
+                          ) : (
+                            <i
+                              className='fas fa-times'
+                              style={{ color: 'red' }}
+                            ></i>
+                          )}
+                        </td>
+                        <td>
+                          <Link to={`/projects/ecommerce/order/${order._id}`}>
+                            <Button className='btn-sm' variant='light'>
+                              Details
+                            </Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </Col>
     </Row>
   );
