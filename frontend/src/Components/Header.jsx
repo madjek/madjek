@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { logout } from '../redux/action/userAction';
 
 const Header = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -16,11 +18,16 @@ const Header = () => {
   };
 
   const [main, setMain] = useState();
+
   useEffect(() => {
-    if (window.location.pathname === '/') {
+    window.scrollTo({ top: 0 });
+    if (location.pathname === '/') {
       setMain(true);
+    } else {
+      setMain(false);
     }
-  }, []);
+    // eslint-disable-next-line
+  }, [location]);
 
   return (
     <header>
