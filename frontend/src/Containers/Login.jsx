@@ -17,12 +17,16 @@ const Login = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && !cartItems[0]) {
       history('/profile');
     } else if (!userInfo) {
       history('/login');
+    } else if (cartItems[0]) {
+      history('/projects/ecommerce/shipping');
     }
   }, [history, userInfo]);
 

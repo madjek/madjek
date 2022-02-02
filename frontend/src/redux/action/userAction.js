@@ -94,7 +94,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
-  // document.location.href = '/login';
+  document.location.href = '/login';
 };
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
