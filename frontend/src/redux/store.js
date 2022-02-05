@@ -35,6 +35,7 @@ import {
   productTopRatedReducer,
   productUpdateReducer,
 } from './reducers/ecommerceReducers';
+import { cryptoListReducer } from './reducers/crypto';
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -66,6 +67,8 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
+
+  cryptoList: cryptoListReducer,
 });
 
 const movieFromStorage = localStorage.getItem('chosenMovie')
