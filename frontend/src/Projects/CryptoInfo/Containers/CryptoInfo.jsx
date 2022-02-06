@@ -3,12 +3,11 @@ import '../css/CryptoInfo.css';
 import { useEffect } from 'react';
 import { Image, ProgressBar, Row, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { cryptoList } from '../../../redux/action/cryptoActions';
 
 const CryptoInfo = () => {
   const dispatch = useDispatch();
-  const history = useNavigate();
 
   const list = useSelector((state) => state.cryptoList);
   const { cryptos } = list;
@@ -46,13 +45,15 @@ const CryptoInfo = () => {
             <tr key={crypto.market_cap_rank} class='text-end'>
               <th class='text-center'>{crypto.market_cap_rank}</th>
               <th class='text-start'>
-                <Image
-                  src={crypto.image}
-                  alt={crypto.name}
-                  style={{ height: '2em' }}
-                  className='mx-2'
-                />
-                {crypto.name} {crypto.symbol.toUpperCase()}
+                <Link to={`/projects/cryptoinfo/${crypto.id}`}>
+                  <Image
+                    src={crypto.image}
+                    alt={crypto.name}
+                    style={{ height: '2em' }}
+                    className='mx-2'
+                  />
+                  {crypto.name} {crypto.symbol.toUpperCase()}
+                </Link>
               </th>
               <th class='text-end'>
                 $

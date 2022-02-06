@@ -27,6 +27,7 @@ import ProductEdit from './Containers/ProductEdit';
 import OrderList from './Containers/OrderList';
 import MovieList from './Containers/MovieList';
 import CryptoInfo from './Projects/CryptoInfo/Containers/CryptoInfo';
+import CryptoDetails from './Projects/CryptoInfo/Containers/CryptoDetails';
 
 function App() {
   return (
@@ -79,6 +80,10 @@ function App() {
             />
 
             <Route path='/projects/cryptoinfo' element={<CryptoInfo />} />
+            <Route
+              path='/projects/cryptoinfo/:id'
+              element={<CryptoDetails />}
+            />
           </Routes>
         </Container>
       </main>
