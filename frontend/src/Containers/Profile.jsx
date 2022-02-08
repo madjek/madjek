@@ -18,6 +18,7 @@ import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
 import MovieCoin from '../Projects/MovieRent/Components/MovieCoin';
 import { listMyOrders } from '../redux/action/ecommerceActions';
+import { getCurrentPrice, listMyCoins } from '../redux/action/cryptoActions';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -50,6 +51,9 @@ const Profile = () => {
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
+  const coinListMy = useSelector((state) => state.coinListMy);
+  const { loading: loadingCoins, error: errorCoins, coins } = coinListMy;
+
   useEffect(() => {
     if (!userInfo) {
       history('/login');
@@ -62,6 +66,9 @@ const Profile = () => {
     }
     dispatch(listMyMovies());
     dispatch(listMyOrders());
+    dispatch(listMyCoins());
+    coinPrices();
+    // dispatch(getCurrentPrice('bitcoin'));
   }, [dispatch, history, userInfo, user, success, returnSuccess]);
 
   if (message) {
@@ -95,6 +102,15 @@ const Profile = () => {
     if (window.confirm('Are you sure?')) {
       dispatch(returnMovie(id));
     }
+  };
+
+  const [prices, setPrices] = useState([]);
+  const coinPrices = () => {
+    let pr = [];
+    coins?.map((coin) => getCurrentPrice(coin?.id).then((res) => pr.push(res)));
+    setPrices(pr);
+    console.log(pr);
+    console.log('HOOK ' + prices);
   };
 
   return (
@@ -265,6 +281,51 @@ const Profile = () => {
                             </Button>
                           </Link>
                         </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item className='bg-dark' eventKey='2'>
+            <Accordion.Header>
+              <h2 className='ms-auto'>My Coins</h2>
+            </Accordion.Header>
+            <Accordion.Body>
+              {loadingCoins ? (
+                <Loader />
+              ) : errorCoins ? (
+                <Message variant='danger'>{errorCoins}</Message>
+              ) : (
+                <Table striped bordered hover responsive className='table-sm'>
+                  <thead>
+                    <tr class='text-center'>
+                      <th>COIN</th>
+                      <th>CURRENT PRICE</th>
+                      <th>PURCHASE PRICE</th>
+                      <th>QUANTITY</th>
+                      <th>VOLUME</th>
+                      <th>CURRENT VALUE</th>
+                      <th>PROFIT</th>
+                      <th>PERCENT</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {coins?.map((coin) => (
+                      <tr key={coin?._id}>
+                        {/* {getCurrentPrice(coin?.id).then((res) =>
+                          console.log(res)
+                        )} */}
+                        <td>{coin?.id}</td>
+                        <td>{prices[0]}</td>
+                        <td>{coin?.price}</td>
+                        <td>{coin?.qty}</td>
+                        <td>{coin?.volume}</td>
+                        <td>total</td>
+                        <td>+-</td>
+                        <td>%</td>
                       </tr>
                     ))}
                   </tbody>

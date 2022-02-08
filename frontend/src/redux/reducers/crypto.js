@@ -1,6 +1,14 @@
 import {
+  ADD_COIN_PORTFOLIO_FAIL,
+  ADD_COIN_PORTFOLIO_REQUEST,
+  ADD_COIN_PORTFOLIO_RESET,
+  ADD_COIN_PORTFOLIO_SUCCESS,
   CHART_FAIL,
   CHART_REQUEST,
+  COIN_LIST_MY_FAIL,
+  COIN_LIST_MY_REQUEST,
+  COIN_LIST_MY_RESET,
+  COIN_LIST_MY_SUCCESS,
   CRYPTO_DETAILS_FAIL,
   CRYPTO_DETAILS_REQUEST,
   CRYPTO_DETAILS_SUCCESS,
@@ -67,6 +75,44 @@ export const cryptoChartsReducer = (
 
     case CHART_FAIL:
       return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const addCoinPortfolioReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_COIN_PORTFOLIO_REQUEST:
+      return { loading: true };
+
+    case ADD_COIN_PORTFOLIO_SUCCESS:
+      return { loading: false, success: true, coin: action.payload };
+
+    case ADD_COIN_PORTFOLIO_FAIL:
+      return { loading: false, error: action.payload };
+
+    case ADD_COIN_PORTFOLIO_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export const coinListMyReducer = (state = { coins: [] }, action) => {
+  switch (action.type) {
+    case COIN_LIST_MY_REQUEST:
+      return { loading: true };
+
+    case COIN_LIST_MY_SUCCESS:
+      return { loading: false, coins: action.payload };
+
+    case COIN_LIST_MY_FAIL:
+      return { loading: false, error: action.payload };
+
+    case COIN_LIST_MY_RESET:
+      return { coins: [] };
 
     default:
       return state;

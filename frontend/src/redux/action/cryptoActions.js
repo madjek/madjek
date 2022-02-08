@@ -1,7 +1,13 @@
 import axios from 'axios';
 import {
+  ADD_COIN_PORTFOLIO_FAIL,
+  ADD_COIN_PORTFOLIO_REQUEST,
+  ADD_COIN_PORTFOLIO_SUCCESS,
   CHART_FAIL,
   CHART_REQUEST,
+  COIN_LIST_MY_FAIL,
+  COIN_LIST_MY_REQUEST,
+  COIN_LIST_MY_SUCCESS,
   CRYPTO_DETAILS_FAIL,
   CRYPTO_DETAILS_REQUEST,
   CRYPTO_DETAILS_SUCCESS,
@@ -12,6 +18,7 @@ import {
   MONTH_CHART_SUCCESS,
   WEEK_CHART_SUCCESS,
 } from '../constants/crypto';
+import { logout } from './userAction';
 
 export const cryptoList = () => async (dispatch) => {
   try {
@@ -44,7 +51,6 @@ export const getCryptoDetails = (id) => async (dispatch) => {
     dispatch({
       type: CRYPTO_DETAILS_REQUEST,
     });
-    console.log('ID ' + id);
     const { data } = await axios.get(
       `https://api.coingecko.com/api/v3/coins/${id}`
     );
@@ -63,15 +69,6 @@ export const getCryptoDetails = (id) => async (dispatch) => {
       payload: message,
     });
   }
-};
-
-const formatData = (data) => {
-  return data.map((el) => {
-    return {
-      t: el[0],
-      y: el[1].toFixed(2),
-    };
-  });
 };
 
 export const monthChart = (id) => async (dispatch) => {
@@ -146,4 +143,98 @@ export const dayChart = (id) => async (dispatch) => {
       payload: message,
     });
   }
+};
+
+export const addCoinPortfolio = (coin) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ADD_COIN_PORTFOLIO_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/cryptoinfo/portfolio`, coin, config);
+
+    dispatch({
+      type: ADD_COIN_PORTFOLIO_SUCCESS,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: ADD_COIN_PORTFOLIO_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const listMyCoins = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: COIN_LIST_MY_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/cryptoinfo/myportfolio/${userInfo._id}`,
+      config
+    );
+
+    dispatch({
+      type: COIN_LIST_MY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: COIN_LIST_MY_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const getCurrentPrice = async (id) => {
+  console.log(id);
+  // return id;
+  try {
+    const { data } = await axios.get(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`
+    );
+    // console.log(data);
+
+    return data[Object.keys(data)[0]]?.usd;
+    // return data[Object.keys(data)[0]]?.usd;
+  } catch (error) {
+    console.log(error);
+  }
+  // console.log(data[Object.keys(data)[0]]?.usd);
 };

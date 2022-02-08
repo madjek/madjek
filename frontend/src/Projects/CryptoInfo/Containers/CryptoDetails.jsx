@@ -1,25 +1,45 @@
-import React, { useEffect } from 'react';
-import { Col, Image, Row } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  FormControl,
+  Image,
+  InputGroup,
+  Row,
+  Table,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Loader from '../../../Components/Loader';
 import Message from '../../../Components/Message';
 import {
+  addCoinPortfolio,
   dayChart,
   getCryptoDetails,
   monthChart,
   weekChart,
 } from '../../../redux/action/cryptoActions';
+import { ADD_COIN_PORTFOLIO_RESET } from '../../../redux/constants/crypto';
 import CoinChart from '../Components/CoinChart';
 
 const CryptoDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const user = useSelector((state) => state.userLogin);
+  const { userInfo } = user;
   const cryptoDetails = useSelector((state) => state.cryptoDetails);
   const { loading, error, crypto } = cryptoDetails;
   const cryptoCharts = useSelector((state) => state.cryptoCharts);
   const { day, week, month } = cryptoCharts;
+  const addCoin = useSelector((state) => state.addCoin);
+  const { success, error: erroraddCoin } = addCoin;
+  const [message, setMessage] = useState(null);
+  const [price, setPrice] = useState(0);
+  const [qty, setQty] = useState(0);
+  const volume = price * qty;
 
   useEffect(() => {
     dispatch(getCryptoDetails(id));
@@ -41,6 +61,34 @@ const CryptoDetails = () => {
     return <div dangerouslySetInnerHTML={{ __html: htmlPart }} />;
   };
 
+  const addCoinHandler = () => {
+    if (!userInfo) {
+      setMessage('You should login to add coin');
+    } else if (volume === 0) {
+      setMessage('You should add purchase data');
+    } else {
+      let data = {
+        user: userInfo._id,
+        id: crypto?.id,
+        price: price,
+        qty: qty,
+        volume: volume,
+      };
+      dispatch(addCoinPortfolio(data));
+    }
+  };
+
+  if (message) {
+    setTimeout(() => {
+      setMessage(null);
+    }, 2000);
+  }
+  if (success) {
+    setTimeout(() => {
+      dispatch({ type: ADD_COIN_PORTFOLIO_RESET });
+    }, 2000);
+  }
+
   return (
     <Row className='justify-content-center'>
       {loading ? (
@@ -48,7 +96,7 @@ const CryptoDetails = () => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Row className=' my-3'>
+        <Row className='justify-content-center my-3'>
           <Col className='d-block fs-1'>
             <Row>
               <Col xs={5}>
@@ -105,6 +153,76 @@ const CryptoDetails = () => {
               Monthly
               <CoinChart priceChart={month} period='month' />
             </Col>
+          </Row>
+          <Row className='justify-content-center text-center my-3'>
+            <h1>Track Investments</h1>
+            <Card className='px-4' bg='dark'>
+              <Row className='align-items-end mt-2 mb-3'>
+                <Col md={3}>
+                  <Form.Label className='mt-md-0 mb-0'>
+                    PURCHASE PRICE
+                  </Form.Label>
+                  <InputGroup className='bg-dark'>
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <FormControl
+                      type='number'
+                      aria-label='Purchase price'
+                      value={price}
+                      step='0.01'
+                      min='0'
+                      onChange={(e) => setPrice(e.target.value)}
+                      required
+                    />
+                  </InputGroup>
+                </Col>
+                <Col md={3}>
+                  <Form.Label className='mt-md-0 mb-0 mt-2'>
+                    QUANTITY
+                  </Form.Label>
+                  <InputGroup className='bg-dark'>
+                    <FormControl
+                      type='number'
+                      aria-label='Quantity'
+                      value={qty}
+                      step='0.01'
+                      min='0'
+                      onChange={(e) => setQty(e.target.value)}
+                      required
+                    />
+                  </InputGroup>
+                </Col>
+                <Col md={4}>
+                  <Form.Label className='mt-md-0 mb-0 mt-2'>VOLUME</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Text>$</InputGroup.Text>
+                    <FormControl
+                      readOnly
+                      aria-label='Volume'
+                      value={volume
+                        .toFixed(8)
+                        .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                        .replace(/0{1,6}$/, '')}
+                    />
+                  </InputGroup>
+                </Col>
+                <Col md={2} className='d-grid'>
+                  <Button
+                    type='button'
+                    className='btn-block mt-4'
+                    onClick={addCoinHandler}
+                  >
+                    Add
+                  </Button>
+                </Col>
+              </Row>
+              {message && <Message>{message}</Message>}
+              {success && (
+                <Message variant='success'>Coin added successfully</Message>
+              )}
+              {erroraddCoin && (
+                <Message variant='danger'>{erroraddCoin}</Message>
+              )}
+            </Card>
           </Row>
           {crypto?.description.en && (
             <Row className='my-3'>

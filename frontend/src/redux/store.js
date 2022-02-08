@@ -36,6 +36,8 @@ import {
   productUpdateReducer,
 } from './reducers/ecommerceReducers';
 import {
+  addCoinPortfolioReducer,
+  coinListMyReducer,
   cryptoChartsReducer,
   cryptoDetailsReducer,
   cryptoListReducer,
@@ -75,6 +77,8 @@ const reducer = combineReducers({
   cryptoList: cryptoListReducer,
   cryptoDetails: cryptoDetailsReducer,
   cryptoCharts: cryptoChartsReducer,
+  addCoin: addCoinPortfolioReducer,
+  coinListMy: coinListMyReducer,
 });
 
 const movieFromStorage = localStorage.getItem('chosenMovie')
