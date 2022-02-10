@@ -8,7 +8,6 @@ import {
   Image,
   InputGroup,
   Row,
-  Table,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -70,7 +69,10 @@ const CryptoDetails = () => {
       let data = {
         user: userInfo._id,
         id: crypto?.id,
+        rank: crypto?.market_cap_rank,
+        symbol: crypto?.symbol.toUpperCase(),
         price: price,
+        currentPrice: crypto?.market_data.current_price.usd,
         qty: qty,
         volume: volume,
       };

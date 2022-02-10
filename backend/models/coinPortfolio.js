@@ -11,7 +11,19 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    rank: {
+      type: Number,
+      required: true,
+    },
+    symbol: {
+      type: String,
+      required: true,
+    },
     price: {
+      type: Number,
+      required: true,
+    },
+    currentPrice: {
       type: Number,
       required: true,
     },

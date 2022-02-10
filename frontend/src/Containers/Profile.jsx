@@ -67,8 +67,6 @@ const Profile = () => {
     dispatch(listMyMovies());
     dispatch(listMyOrders());
     dispatch(listMyCoins());
-    coinPrices();
-    // dispatch(getCurrentPrice('bitcoin'));
   }, [dispatch, history, userInfo, user, success, returnSuccess]);
 
   if (message) {
@@ -104,13 +102,12 @@ const Profile = () => {
     }
   };
 
-  const [prices, setPrices] = useState([]);
-  const coinPrices = () => {
-    let pr = [];
-    coins?.map((coin) => getCurrentPrice(coin?.id).then((res) => pr.push(res)));
-    setPrices(pr);
-    console.log(pr);
-    console.log('HOOK ' + prices);
+  const textColor = (value) => {
+    if (value > 0) {
+      return 'lightgreen';
+    } else {
+      return 'red';
+    }
   };
 
   return (
@@ -300,9 +297,9 @@ const Profile = () => {
               ) : (
                 <Table striped bordered hover responsive className='table-sm'>
                   <thead>
-                    <tr class='text-center'>
+                    <tr className='text-center'>
                       <th>COIN</th>
-                      <th>CURRENT PRICE</th>
+                      <th bg='light'>CURRENT PRICE</th>
                       <th>PURCHASE PRICE</th>
                       <th>QUANTITY</th>
                       <th>VOLUME</th>
@@ -315,17 +312,61 @@ const Profile = () => {
                   <tbody>
                     {coins?.map((coin) => (
                       <tr key={coin?._id}>
-                        {/* {getCurrentPrice(coin?.id).then((res) =>
-                          console.log(res)
-                        )} */}
-                        <td>{coin?.id}</td>
-                        <td>{prices[0]}</td>
-                        <td>{coin?.price}</td>
+                        <td>{coin?.symbol}</td>
+                        <td
+                          style={{
+                            color: textColor(coin?.currentPrice - coin?.price),
+                          }}
+                        >
+                          ${coin?.currentPrice}
+                        </td>
+                        <td>${coin?.price}</td>
                         <td>{coin?.qty}</td>
-                        <td>{coin?.volume}</td>
-                        <td>total</td>
-                        <td>+-</td>
-                        <td>%</td>
+                        <td>${coin?.volume}</td>
+                        <td>
+                          $
+                          {(coin?.currentPrice * coin?.qty)
+                            .toFixed(8)
+                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                            .replace(/0{1,6}$/, '')}
+                        </td>
+                        <td
+                          style={{
+                            color: textColor(
+                              coin?.currentPrice * coin?.qty - coin?.volume
+                            ),
+                          }}
+                        >
+                          $
+                          {(coin?.currentPrice * coin?.qty - coin?.volume)
+                            .toFixed(8)
+                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                            .replace(/0{1,6}$/, '')}
+                        </td>
+                        <td
+                          style={{
+                            color: textColor(
+                              ((coin?.currentPrice * coin?.qty) / coin?.volume -
+                                1) *
+                                100
+                            ),
+                          }}
+                        >
+                          {(
+                            ((coin?.currentPrice * coin?.qty) / coin?.volume -
+                              1) *
+                            100
+                          ).toFixed(2)}
+                          %
+                        </td>
+                        <td>
+                          <Button variant='info' className='btn-sm'>
+                            <i className='fas fa-edit'></i>
+                          </Button>
+                          <Button variant='danger' className='btn-sm'>
+                            <i className='fas fa-trash'></i>
+                          </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

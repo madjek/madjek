@@ -202,7 +202,6 @@ export const listMyCoins = () => async (dispatch, getState) => {
       `/api/cryptoinfo/myportfolio/${userInfo._id}`,
       config
     );
-
     dispatch({
       type: COIN_LIST_MY_SUCCESS,
       payload: data,
@@ -223,18 +222,13 @@ export const listMyCoins = () => async (dispatch, getState) => {
 };
 
 export const getCurrentPrice = async (id) => {
-  console.log(id);
-  // return id;
   try {
     const { data } = await axios.get(
       `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`
     );
-    // console.log(data);
 
     return data[Object.keys(data)[0]]?.usd;
-    // return data[Object.keys(data)[0]]?.usd;
   } catch (error) {
     console.log(error);
   }
-  // console.log(data[Object.keys(data)[0]]?.usd);
 };

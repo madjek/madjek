@@ -7,14 +7,17 @@ const getMyCoins = (req, res) => {
 };
 
 const addCoinPortfolio = (req, res) => {
-  const { user, id, price, qty, volume } = req.body;
+  const { user, id, rank, symbol, price, currentPrice, qty, volume } = req.body;
   if (!id) {
     res.status(400).json({ message: 'No any coin' });
   } else {
     const coin = new CoinPortfolio({
       user,
       id,
+      rank,
+      symbol,
       price,
+      currentPrice,
       qty,
       volume,
     });
