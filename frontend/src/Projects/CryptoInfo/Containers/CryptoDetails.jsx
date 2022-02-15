@@ -47,6 +47,14 @@ const CryptoDetails = () => {
     dispatch(monthChart(id));
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (crypto) {
+      setTimeout(() => {
+        setPrice(crypto?.market_data.current_price.usd);
+      }, 10);
+    }
+  }, [crypto]);
+
   const textColor = (value) => {
     if (value > 0) {
       return 'lightgreen';

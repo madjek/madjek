@@ -8,6 +8,9 @@ import {
   COIN_LIST_MY_FAIL,
   COIN_LIST_MY_REQUEST,
   COIN_LIST_MY_SUCCESS,
+  COIN_PORTFOLIO_DELETE_FAIL,
+  COIN_PORTFOLIO_DELETE_REQUEST,
+  COIN_PORTFOLIO_DELETE_SUCCESS,
   CRYPTO_DETAILS_FAIL,
   CRYPTO_DETAILS_REQUEST,
   CRYPTO_DETAILS_SUCCESS,
@@ -221,14 +224,38 @@ export const listMyCoins = () => async (dispatch, getState) => {
   }
 };
 
-export const getCurrentPrice = async (id) => {
+export const deleteCoinPortfolio = (id) => async (dispatch, getState) => {
   try {
-    const { data } = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`
-    );
+    dispatch({
+      type: COIN_PORTFOLIO_DELETE_REQUEST,
+    });
 
-    return data[Object.keys(data)[0]]?.usd;
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/cryptoinfo/myportfolio/coin/${id}`, config);
+
+    dispatch({
+      type: COIN_PORTFOLIO_DELETE_SUCCESS,
+    });
   } catch (error) {
-    console.log(error);
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+    dispatch({
+      type: COIN_PORTFOLIO_DELETE_FAIL,
+      payload: message,
+    });
   }
 };

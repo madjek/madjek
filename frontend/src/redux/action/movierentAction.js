@@ -150,6 +150,7 @@ export const listMyMovies = () => async (dispatch, getState) => {
       type: MOVIE_LIST_MY_SUCCESS,
       payload: data,
     });
+    dispatch(MovieCredits());
   } catch (error) {
     const message =
       error.response && error.response.data.message

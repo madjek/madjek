@@ -18,7 +18,10 @@ import { listMyMovies, returnMovie } from '../redux/action/movierentAction';
 import moment from 'moment';
 import MovieCoin from '../Projects/MovieRent/Components/MovieCoin';
 import { listMyOrders } from '../redux/action/ecommerceActions';
-import { getCurrentPrice, listMyCoins } from '../redux/action/cryptoActions';
+import {
+  deleteCoinPortfolio,
+  listMyCoins,
+} from '../redux/action/cryptoActions';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -26,6 +29,8 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
+  const [volume, setVolume] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -54,10 +59,17 @@ const Profile = () => {
   const coinListMy = useSelector((state) => state.coinListMy);
   const { loading: loadingCoins, error: errorCoins, coins } = coinListMy;
 
+  const coinDelete = useSelector((state) => state.coinPortfolioDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = coinDelete;
+
   useEffect(() => {
     if (!userInfo) {
       history('/login');
-    } else if (!user || !user.name || success) {
+    } else if (!user || success) {
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
       dispatch(getUserDetails('profile'));
     } else {
@@ -67,7 +79,23 @@ const Profile = () => {
     dispatch(listMyMovies());
     dispatch(listMyOrders());
     dispatch(listMyCoins());
-  }, [dispatch, history, userInfo, user, success, returnSuccess]);
+    setVolume(0);
+    setCurrent(0);
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    user,
+    success,
+    returnSuccess,
+    successDelete,
+  ]);
+
+  useEffect(() => {
+    if (coins) {
+      total();
+    }
+  }, [coins]);
 
   if (message) {
     setTimeout(() => {
@@ -108,6 +136,21 @@ const Profile = () => {
     } else {
       return 'red';
     }
+  };
+
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure')) {
+      dispatch(deleteCoinPortfolio(id));
+    }
+  };
+
+  const total = () => {
+    coins?.map(
+      (coin) => (
+        setVolume((volume) => volume + coin?.volume),
+        setCurrent((current) => current + coin?.currentPrice * coin?.qty)
+      )
+    );
   };
 
   return (
@@ -290,87 +333,143 @@ const Profile = () => {
               <h2 className='ms-auto'>My Coins</h2>
             </Accordion.Header>
             <Accordion.Body>
-              {loadingCoins ? (
+              {loadingCoins || loadingDelete ? (
                 <Loader />
-              ) : errorCoins ? (
+              ) : errorCoins || errorDelete ? (
                 <Message variant='danger'>{errorCoins}</Message>
               ) : (
-                <Table striped bordered hover responsive className='table-sm'>
-                  <thead>
-                    <tr className='text-center'>
-                      <th>COIN</th>
-                      <th bg='light'>CURRENT PRICE</th>
-                      <th>PURCHASE PRICE</th>
-                      <th>QUANTITY</th>
-                      <th>VOLUME</th>
-                      <th>CURRENT VALUE</th>
-                      <th>PROFIT</th>
-                      <th>PERCENT</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {coins?.map((coin) => (
-                      <tr key={coin?._id}>
-                        <td>{coin?.symbol}</td>
-                        <td
-                          style={{
-                            color: textColor(coin?.currentPrice - coin?.price),
-                          }}
-                        >
-                          ${coin?.currentPrice}
-                        </td>
-                        <td>${coin?.price}</td>
-                        <td>{coin?.qty}</td>
-                        <td>${coin?.volume}</td>
-                        <td>
-                          $
-                          {(coin?.currentPrice * coin?.qty)
-                            .toFixed(8)
-                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
-                            .replace(/0{1,6}$/, '')}
-                        </td>
-                        <td
-                          style={{
-                            color: textColor(
-                              coin?.currentPrice * coin?.qty - coin?.volume
-                            ),
-                          }}
-                        >
-                          $
-                          {(coin?.currentPrice * coin?.qty - coin?.volume)
-                            .toFixed(8)
-                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
-                            .replace(/0{1,6}$/, '')}
-                        </td>
-                        <td
-                          style={{
-                            color: textColor(
+                <>
+                  <Table striped bordered hover responsive className='table-sm'>
+                    <thead>
+                      <tr className='text-center'>
+                        <th>COIN</th>
+                        <th bg='light'>CURRENT PRICE</th>
+                        <th>PURCHASE PRICE</th>
+                        <th>QUANTITY</th>
+                        <th>VOLUME</th>
+                        <th>CURRENT VALUE</th>
+                        <th>PROFIT</th>
+                        <th>PERCENT</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {coins?.map((coin) => (
+                        <tr key={coin?._id}>
+                          <td>{coin?.symbol}</td>
+                          <td
+                            style={{
+                              color: textColor(
+                                coin?.currentPrice - coin?.price
+                              ),
+                            }}
+                          >
+                            ${coin?.currentPrice}
+                          </td>
+                          <td>${coin?.price}</td>
+                          <td>{coin?.qty}</td>
+                          <td>${coin?.volume}</td>
+                          <td>
+                            $
+                            {(coin?.currentPrice * coin?.qty)
+                              .toFixed(8)
+                              .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                              .replace(/0{1,6}$/, '')}
+                          </td>
+                          <td
+                            style={{
+                              color: textColor(
+                                coin?.currentPrice * coin?.qty - coin?.volume
+                              ),
+                            }}
+                          >
+                            $
+                            {(coin?.currentPrice * coin?.qty - coin?.volume)
+                              .toFixed(8)
+                              .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                              .replace(/0{1,6}$/, '')}
+                          </td>
+                          <td
+                            style={{
+                              color: textColor(
+                                ((coin?.currentPrice * coin?.qty) /
+                                  coin?.volume -
+                                  1) *
+                                  100
+                              ),
+                            }}
+                          >
+                            {(
                               ((coin?.currentPrice * coin?.qty) / coin?.volume -
                                 1) *
-                                100
-                            ),
+                              100
+                            ).toFixed(2)}
+                            %
+                          </td>
+                          <td>
+                            <Button
+                              variant='danger'
+                              className='btn-sm'
+                              onClick={() => deleteHandler(coin._id)}
+                            >
+                              <i className='fas fa-trash'></i>
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                  <Table striped bordered hover responsive>
+                    <tbody className='fs-md-5'>
+                      <tr>
+                        <td>Portfolio initial value</td>
+                        <td>Portfolio current value</td>
+                        <td>Portfolio profit</td>
+                        <td>Percent</td>
+                      </tr>
+                      <tr className='fw-bold'>
+                        <td>
+                          $
+                          {volume
+                            .toFixed(8)
+                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                            .replace(/0{1,6}$/, '')}
+                        </td>
+                        <td
+                          style={{
+                            color: textColor(current - volume),
                           }}
                         >
-                          {(
-                            ((coin?.currentPrice * coin?.qty) / coin?.volume -
-                              1) *
-                            100
-                          ).toFixed(2)}
-                          %
+                          $
+                          {current
+                            .toFixed(8)
+                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                            .replace(/0{1,6}$/, '')}
                         </td>
-                        <td>
-                          <Button variant='info' className='btn-sm'>
-                            <i className='fas fa-edit'></i>
-                          </Button>
-                          <Button variant='danger' className='btn-sm'>
-                            <i className='fas fa-trash'></i>
-                          </Button>
+                        <td
+                          style={{
+                            color: textColor(current - volume),
+                          }}
+                        >
+                          $
+                          {(current - volume)
+                            .toFixed(8)
+                            .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                            .replace(/0{1,6}$/, '')}
+                        </td>
+                        <td
+                          style={{
+                            color: textColor(current - volume),
+                          }}
+                        >
+                          {((current / volume - 1) * 100).toFixed(2)}%
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                      <tr className='fw-bold'></tr>
+                      <tr className='fw-bold'></tr>
+                    </tbody>
+                  </Table>
+                </>
               )}
             </Accordion.Body>
           </Accordion.Item>

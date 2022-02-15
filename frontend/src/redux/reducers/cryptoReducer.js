@@ -9,6 +9,9 @@ import {
   COIN_LIST_MY_REQUEST,
   COIN_LIST_MY_RESET,
   COIN_LIST_MY_SUCCESS,
+  COIN_PORTFOLIO_DELETE_FAIL,
+  COIN_PORTFOLIO_DELETE_REQUEST,
+  COIN_PORTFOLIO_DELETE_SUCCESS,
   CRYPTO_DETAILS_FAIL,
   CRYPTO_DETAILS_REQUEST,
   CRYPTO_DETAILS_SUCCESS,
@@ -114,6 +117,19 @@ export const coinListMyReducer = (state = { coins: [] }, action) => {
     case COIN_LIST_MY_RESET:
       return { coins: [] };
 
+    default:
+      return state;
+  }
+};
+
+export const coinPortfolioDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COIN_PORTFOLIO_DELETE_REQUEST:
+      return { loading: true };
+    case COIN_PORTFOLIO_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case COIN_PORTFOLIO_DELETE_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
