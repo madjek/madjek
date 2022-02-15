@@ -35,6 +35,14 @@ import {
   productTopRatedReducer,
   productUpdateReducer,
 } from './reducers/ecommerceReducers';
+import {
+  addCoinPortfolioReducer,
+  coinListMyReducer,
+  coinPortfolioDeleteReducer,
+  cryptoChartsReducer,
+  cryptoDetailsReducer,
+  cryptoListReducer,
+} from './reducers/cryptoReducer';
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -66,6 +74,13 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
+
+  cryptoList: cryptoListReducer,
+  cryptoDetails: cryptoDetailsReducer,
+  cryptoCharts: cryptoChartsReducer,
+  addCoin: addCoinPortfolioReducer,
+  coinListMy: coinListMyReducer,
+  coinPortfolioDelete: coinPortfolioDeleteReducer,
 });
 
 const movieFromStorage = localStorage.getItem('chosenMovie')

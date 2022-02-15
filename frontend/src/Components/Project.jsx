@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Col, Image, Row } from 'react-bootstrap';
 import movierent from '../assets/img/movie.png';
 import ecommerce from '../assets/img/ecommerce.png';
+import crypto from '../assets/img/crypto.png';
 import Tada from 'react-reveal/Tada';
 
 const Projects = () => {
@@ -21,6 +22,14 @@ const Projects = () => {
           <Link to='/projects/ecommerce'>
             <Image src={ecommerce} alt='ecommerce' />
             <h3>E-Commerce</h3>
+          </Link>
+        </Tada>
+      </Col>
+      <Col className='my-3' md={6}>
+        <Tada>
+          <Link to='/projects/cryptoinfo'>
+            <Image src={crypto} alt='crypto' />
+            <h3>Crypto Info</h3>
           </Link>
         </Tada>
       </Col>

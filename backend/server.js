@@ -7,6 +7,7 @@ import db from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import movieRentRoutes from './routes/movieRentRoutes.js';
 import ecommerceRoutes from './routes/ecommerceRoutes.js';
+import cryptoinfoRoutes from './routes/cryptoInfoRoutes.js';
 
 dotenv.config();
 db();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/movierent', movieRentRoutes);
 app.use('/api/ecommerce', ecommerceRoutes);
+app.use('/api/cryptoinfo', cryptoinfoRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)

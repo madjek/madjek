@@ -26,7 +26,7 @@ const Login = () => {
     } else if (!userInfo) {
       history('/login');
     } else if (cartItems[0]) {
-      history('/projects/ecommerce/shipping');
+      history('/projects/ecommerce/cart');
     }
   }, [history, userInfo]);
 
