@@ -420,7 +420,7 @@ const Profile = () => {
                     </tbody>
                   </Table>
                   <Table striped bordered hover responsive>
-                    <tbody className='fs-md-5'>
+                    <tbody>
                       <tr>
                         <td>Portfolio initial value</td>
                         <td>Portfolio current value</td>
@@ -465,8 +465,6 @@ const Profile = () => {
                           {((current / volume - 1) * 100).toFixed(2)}%
                         </td>
                       </tr>
-                      <tr className='fw-bold'></tr>
-                      <tr className='fw-bold'></tr>
                     </tbody>
                   </Table>
                 </>
