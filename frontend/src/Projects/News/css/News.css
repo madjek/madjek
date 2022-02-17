@@ -1,0 +1,35 @@
+.articleCard {
+  height: 40vh;
+  overflow: hidden;
+}
+.articleImg {
+  display: flex;
+  height: 20vh;
+  margin: 0 auto;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.articleImg {
+  transition: transform 1s ease;
+}
+
+.articleImg:hover {
+  transform: scale(1.21);
+}
+
+.topicBtn {
+  padding: 0 2px;
+}
+
+.singleArticleImg {
+  height: 60vh;
+  object-fit: cover;
+}
+
+.textO {
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 1.2;
+  max-height: calc(1.2em * 3);
+}

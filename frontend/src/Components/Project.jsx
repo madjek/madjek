@@ -4,6 +4,7 @@ import { Col, Image, Row } from 'react-bootstrap';
 import movierent from '../assets/img/movie.png';
 import ecommerce from '../assets/img/ecommerce.png';
 import crypto from '../assets/img/crypto.png';
+import news from '../assets/img/news.png';
 import Tada from 'react-reveal/Tada';
 
 const Projects = () => {
@@ -30,6 +31,14 @@ const Projects = () => {
           <Link to='/projects/cryptoinfo'>
             <Image src={crypto} alt='crypto' />
             <h3>Crypto Info</h3>
+          </Link>
+        </Tada>
+      </Col>
+      <Col className='my-3' md={6}>
+        <Tada>
+          <Link to='/projects/news'>
+            <Image src={news} alt='news' />
+            <h3>News</h3>
           </Link>
         </Tada>
       </Col>

@@ -43,6 +43,7 @@ import {
   cryptoDetailsReducer,
   cryptoListReducer,
 } from './reducers/cryptoReducer';
+import { newsListReducer } from './reducers/newsReducer';
 
 const reducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -81,6 +82,8 @@ const reducer = combineReducers({
   addCoin: addCoinPortfolioReducer,
   coinListMy: coinListMyReducer,
   coinPortfolioDelete: coinPortfolioDeleteReducer,
+
+  newsList: newsListReducer,
 });
 
 const movieFromStorage = localStorage.getItem('chosenMovie')
