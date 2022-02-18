@@ -1,7 +1,9 @@
 .articleCard {
   height: 40vh;
   overflow: hidden;
+  border-radius: 5% !important;
 }
+
 .articleImg {
   display: flex;
   height: 20vh;

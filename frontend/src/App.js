@@ -30,6 +30,7 @@ import CryptoInfo from './Projects/CryptoInfo/Containers/CryptoInfo';
 import CryptoDetails from './Projects/CryptoInfo/Containers/CryptoDetails';
 import News from './Projects/News/Containers/News';
 import Article from './Projects/News/Containers/Article';
+import SearchResult from './Projects/News/Containers/SearchResult';
 
 function App() {
   return (
@@ -89,6 +90,10 @@ function App() {
 
             <Route path='/projects/news' element={<News />} />
             <Route path='/projects/news/article' element={<Article />} />
+            <Route
+              path='/projects/news/search/:query'
+              element={<SearchResult />}
+            />
           </Routes>
         </Container>
       </main>

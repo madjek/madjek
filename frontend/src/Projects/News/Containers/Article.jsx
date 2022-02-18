@@ -1,34 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Card,
-  Col,
-  Image,
-  OverlayTrigger,
-  Row,
-  Table,
-  Tooltip,
-} from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../../Components/Message';
+import { Button, Card, Col, Image, Row } from 'react-bootstrap';
 
 const Article = () => {
-  const { id } = useParams();
   const history = useNavigate();
-  const dispatch = useDispatch();
+
   const [article, setArticle] = useState(
     JSON.parse(localStorage.getItem('chosenArticle'))
   );
 
   return (
     <>
-      <Link className='btn btn-light my-3' to='/projects/news'>
+      <Button className='btn-light my-3' onClick={() => history(-2)}>
         Go Back
-      </Link>
+      </Button>
       <Row className='mb-3'>
         <Col xs={12} className='fs-1'>
           {article.title}

@@ -6,15 +6,6 @@ import moment from 'moment';
 const ArticleCard = ({ article }) => {
   const history = useNavigate();
 
-  function kitcut(text, limit) {
-    text = text.trim();
-    if (text.length <= limit) return text;
-
-    text = text.slice(0, limit);
-
-    return text.trim() + '...';
-  }
-
   const chosenArticle = (chosenArticle) => {
     localStorage.setItem('chosenArticle', JSON.stringify(chosenArticle));
     history('/projects/news/article');
@@ -29,6 +20,7 @@ const ArticleCard = ({ article }) => {
               <Card.Img
                 className='articleImg'
                 src={article.media}
+                alt={article.topic}
                 variant='top'
                 onClick={() => chosenArticle(article)}
               />
@@ -36,6 +28,7 @@ const ArticleCard = ({ article }) => {
               <Card.Img
                 className='articleImg'
                 src='https://picsum.photos/200'
+                alt={article.topic}
                 variant='top'
                 onClick={() => chosenArticle(article)}
               />
@@ -64,7 +57,6 @@ const ArticleCard = ({ article }) => {
               <i className='fas fa-calendar-alt'></i>{' '}
               {moment(article.publishedAt).format('MMMM DD, YYYY')}
             </Card.Text>
-            <Card.Text>{article.description}</Card.Text>
           </Card.Body>
         </Card>
       </Col>

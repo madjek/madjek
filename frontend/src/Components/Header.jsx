@@ -18,6 +18,7 @@ const Header = () => {
   };
 
   const [main, setMain] = useState();
+  const [news, setNews] = useState();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -25,6 +26,15 @@ const Header = () => {
       setMain(true);
     } else {
       setMain(false);
+    }
+    if (
+      location.pathname === '/projects/news' ||
+      location.pathname === '/projects/news/article' ||
+      location.pathname === '/projects/news/search/:query'
+    ) {
+      setNews(true);
+    } else {
+      setNews(false);
     }
     // eslint-disable-next-line
   }, [location]);
@@ -49,7 +59,47 @@ const Header = () => {
                   <NavDropdown.Item href='/projects/cryptoinfo'>
                     Crypto Info
                   </NavDropdown.Item>
+                  <NavDropdown.Item href='/projects/news'>
+                    News
+                  </NavDropdown.Item>
                 </NavDropdown>
+                {news && (
+                  <NavDropdown title='Categories' id='basic-nav-dropdown'>
+                    <NavDropdown.Item href='/projects/news/search/News?lang=en'>
+                      News
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Sport?lang=en'>
+                      Sport
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Tech?lang=en'>
+                      Tech
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/World?lang=en'>
+                      World
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Finance?lang=en'>
+                      Finance
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Politics?lang=en'>
+                      Politics
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Business?lang=en'>
+                      Business
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Economics?lang=en'>
+                      Economics
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Entertainment?lang=en'>
+                      Entertainment
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Beauty?lang=en'>
+                      Beauty
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href='/projects/news/search/Gaming?lang=en'>
+                      Gaming
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                )}
                 {/* <Nav.Link href='/contact'>Contact</Nav.Link> */}
               </Nav>
               <Nav>
