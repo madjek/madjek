@@ -4,7 +4,6 @@ import { Container } from 'react-bootstrap';
 import Home from './Containers/Home';
 import Header from './Components/Header';
 import Projects from './Containers/Projects';
-import Contact from './Containers/Contact';
 
 import Register from './Containers/Register';
 import Login from './Containers/Login';
@@ -41,7 +40,6 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/projects' element={<Projects />} />
-            <Route path='/contact' element={<Contact />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/profile' element={<Profile />} />

@@ -4,6 +4,7 @@ import DevImg from '../Components/DevImg';
 import Technology from '../Components/Technology';
 import Project from '../Components/Project';
 import Fade from 'react-reveal/Fade';
+import Contact from '../Components/Contact';
 
 const Home = () => {
   return (
@@ -56,8 +57,8 @@ const Home = () => {
         <Project />
       </Row>
       <Row id='contacts' className='text-center mb-5'>
-        {/* <a href='/projects'>See My Projects</a> */}
-        <a href='/contact'>Contact With Me</a>
+        <h3 className='fw-bold rainbow_text_animated mt-5'>Contact With Me</h3>
+        <Contact />
       </Row>
     </Row>
   );
